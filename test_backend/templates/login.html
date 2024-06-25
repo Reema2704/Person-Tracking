@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css" >
+    <!-- <script src="/static/js/index.js"></script> -->
+    <title>Login form</title>
+</head>
+<body>
+    <div class="container">
+      <!-- <i class="fa fa-user-circle" aria-hidden="true" style="height: ;"></i>
+      <i class="fa fa-user-o" aria-hidden="true"></i> -->
+      <!-- <i class="fa-solid fa-user" style="color: #fafafa;" height="80" width="80"></i> -->
+        <img src="/static/images/secure_ai.svg"  width="150" style="align-items: center; margin-left: 20%; ">
+        <!-- <h2 class="login-title">Log in</h2> -->
+        <form class="login-form" action="/login" method="post">
+          <div style="margin-top: 20px;">
+            <label for="username" style="color: white; display: none;" >Username </label>
+            <input
+                   id="username"
+                   type="usename"
+                   placeholder="Username"
+                   name="username"
+                   required
+                   />
+          </div>
+          <div>
+            <label for="password"style="color:white; display: none;">Password </label>
+            <input
+                   id="password"
+                   type="password"
+                   placeholder="Password"
+                   name="password"
+                   required
+                   />
+          </div>
+          <br>
+          <button class="btn btn--form" type="submit" value="Log in">
+            LOGIN
+          </button>
+        </form>
+         <!-- Pop-up message container -->
+    <div id="messageContainer" class="message-container hidden">
+      <p id="messageText"></p>
+  </div>
+    </div>
+
+</body>
+</html>

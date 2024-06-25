@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Highcharts Demo</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body style='background: url("/static/images/login-background.png");'>
+    <div style=" width: 100%;height: 10vh;">
+        <img src="/static/images/secure_ai.svg"  style="height: 10vh;width: 200px; margin-left: 1%;">
+        </div>
+    <div id="chartContainer" style="width: 1000px; height: 500px; background-color: #06143a; margin-left: 8%;"></div>
+    <script>
+        // Fetch data from FastAPI endpoint
+        // setInterval(function() {
+
+            fetch('/tracks/get_all')
+            .then(response => response.json())
+            .then(data => {
+                   
+                createHighchart(data)
+
+                // Process the received data and create the Highcharts chart
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+            // }, 5000);
+        
+            
+            // var chartData = [];
+    // var cameraIds = {};
+    // var personIds = {};
+        // Function to create Highcharts chart with the received data
+function createHighchart(data) {
+                       // Organize data for Highcharts
+    console.log(data)
+    const newdata = {};
+    for (const [personId, entries] of Object.entries(data)) {
+        newdata[personId] = entries.map(entry => [entry[0]*1000, parseInt(entry[1])]);
+    }
+    console.log("newdata",newdata)
+
+    // Create the Highchart
+    Highcharts.chart('chartContainer', {
+        chart: {
+            type: 'line',
+            zoomType: "x",
+            backgroundColor: "white",
+            style: {
+            fontFamily: 'monospace',
+            color: "black"
+        }
+        },
+        title: {
+            style: {
+         color: 'black',
+         font: 'bold 17px "Trebuchet MS", Verdana, sans-serif,monospace'
+      },
+            text: 'Highchart for Person Recognition'
+        },
+        time:{
+            useUTC:false,
+            timezoneOffset: 330 ,
+        },
+        xAxis: {
+            
+            type: 'datetime',
+            labels: {
+         style: {
+            color: 'black',
+            font: '11px Trebuchet MS, Verdana, sans-serif'
+         }
+      },
+            
+            // labels: {
+            // formatter: function() {
+            //     return Highcharts.dateFormat('%a %d %b %H:%M:%S', this.value);
+            // }
+        
+            title: {
+                style: {
+            color: 'white',
+            font: '15px Trebuchet MS, Verdana, sans-serif'
+         },
+                text: 'Timestamp'
+            }
+        },
+        yAxis: {
+            labels: {
+         style: {
+            color: 'white',
+            font: '11px Trebuchet MS, Verdana, sans-serif'
+         }
+      },
+            title: {
+                style: {
+            color: 'white',
+            font: '15px Trebuchet MS, Verdana, sans-serif'
+         },
+                text: 'Camera ID'
+            }
+        },
+        series: Object.entries(newdata).map(([personId, seriesData]) => ({
+            states: { hover: { enabled: false } },
+            name: personId,
+            data: seriesData
+        })),
+        
+    });
+    // setTimeout(createHighchart(data), 5000);
+
+}
+    // setTimeout(createHighchart(data), 5000);
+
+
+    </script>
+</body>
+</html>

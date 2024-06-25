@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Line Chart: Timestamp vs Camera ID with Person ID</title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+  <div id="lineChartContainer" style="width: 600px; height: 400px;"></div>
+
+  <script>
+    // Sample data: Replace this with your actual data
+
+//     document.addEventListener("DOMContentLoaded", function () {
+//     fetch("/tracks/get_all")
+//         .then((response) => response.json())
+//         .then((data) => {
+//             createChart(data);
+//         })
+//         .catch((error) => {
+//             console.error("Error:", error);
+//         });
+//       return data;
+// });
+    var data = 
+      {
+        "64c2a69b17b807b1e628629c":[[0,1],[1,2],[2,3]],
+        "64c2a6a117b807b1e628629e":[[0,2],[1,1],[2,3]],
+      }
+      
+      // Add more data points here
+    // ;
+
+    // Function to convert UUID to a numeric value (use your own hash function)
+    function uuidToNumber(uuid) {
+      // Implement your UUID to numeric conversion logic here
+      // For simplicity, let's assume it returns a random number between 0 and 100
+      return Math.random() * 100;
+    }
+
+    // Organize data for Highcharts
+    var chartData = [];
+    var cameraIds = {};
+    var personIds = {};
+
+    // data.forEach(item => {
+    //   const xValue = item.timestamp;
+    //   const yValue = parseInt(item.camera_id);
+
+    //   if (!cameraIds[item.camera_id]) {
+    //     cameraIds[item.camera_id] = chartData.length;
+    //   }
+
+    //   if (!personIds[item.person_id]) {
+    //     personIds[item.person_id] = yValue;
+    //   }
+
+    //   chartData.push({
+    //     x: xValue,
+    //     y: yValue,
+    //     cameraId: item.camera_id,
+    //   });
+    // });
+// function createChart(data){
+  console.log(data);
+    // Create the line chart
+    Highcharts.chart('lineChartContainer', {
+      chart: {
+        type: 'line'
+      },
+      title: {
+        text: 'Line Chart: Timestamp vs Camera ID with Person ID'
+      },
+      xAxis: {
+        type: 'datetime',
+        title: {
+          text: 'Timestamp'
+        }
+      },
+      yAxis: {
+        
+        title: {
+          text: 'Camera ID (UUID to Number)'
+        }
+      },
+      tooltip: {
+        formatter: function () {
+          return `Camera ID: ${this.point.cameraId}<br>Person ID: ${Object.keys(personIds).find(key => personIds[key] === this.y)}`;
+        }
+      },
+      series: Object.keys(data).map(person_id => ({
+        name: person_id,
+        data: data[person_id],
+      }))
+    });
+  // }
+  </script>
+</body>
+</html>
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Real-Time Highcharts Chart</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+</head>
+<body>
+    <h1>Real-Time Highcharts Chart</h1>
+    <div id="chart-container"></div>
+    <script src="/static/js/high_chart.js"></script>
+</body>
+</html> -->
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Time Series Chart with Two UUID Fields</title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+  <div id="timeSeriesChartContainer" style="width: 600px; height: 400px;"></div>
+
+  <script>
+    // Sample data: Replace this with your actual time series data with UUIDs
+    var data = [
+      { timestamp: 1669344000000, person_id: "your_uuid_here", camera_id: "your_uuid_here" },
+      { timestamp: 1672022400000, uuid1: "your_uuid_here", uuid2: "your_uuid_here" },
+      { timestamp: 1674700800000, uuid1: "your_uuid_here", uuid2: "your_uuid_here" },
+      // Add more data points here
+    ];
+
+    // Function to convert UUID to a numeric value (use your own hash function)
+    function uuidToNumber(uuid) {
+      // Implement your UUID to numeric conversion logic here
+      // For simplicity, let's assume it returns a random number between 0 and 100
+      return Math.random() * 100;
+    }
+
+    // Create the time series chart
+    Highcharts.chart('timeSeriesChartContainer', {
+      chart: {
+        type: 'line'
+      },
+      title: {
+        text: 'Time Series Chart with Two UUID Fields'
+      },
+      xAxis: {
+        type: 'datetime',
+        title: {
+          text: 'Date'
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'Values'
+        }
+      },
+      series: [
+        {
+          name: 'UUID1',
+          data: data.map(item => [item.timestamp, uuidToNumber(item.uuid1)])
+        },
+        {
+          name: 'UUID2',
+          data: data.map(item => [item.timestamp, uuidToNumber(item.uuid2)])
+        }
+      ]
+    });
+  </script>
+</body>
+</html> -->
+

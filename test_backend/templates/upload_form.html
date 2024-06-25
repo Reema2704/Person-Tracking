@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Uploader</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+<body style='background: url("/static/images/login-background.png");'>
+    <div style=" width: 100%;
+  height: 10vh;">
+  <img src="/static/images/secure_ai.svg"  style="height: 10vh;width: 200px;  margin-left: 1%;
+  ">
+  </div>
+  <div>
+  <!-- <img src="/static/images/cloud-removebg-preview.png" height="100" width="100" style="margin-left: 20%;"> -->
+    <h2 style="color: white;">File Uploader</h2>
+    </div>
+    <div class="custom_div">
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data" style="margin-left: 50%; color: white;">
+        <div class="form-group">
+            <input type="file" id="videoFile" name="videoFile" accept="image/*">
+        </div>
+        <button type="submit">Upload</button>
+    </form>
+    </div>
+    <div id="progressBarContainer" class="progress-bar-container hidden">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+    <div id="messageContainer" class="message-container hidden">
+        <p id="messageText"></p>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>

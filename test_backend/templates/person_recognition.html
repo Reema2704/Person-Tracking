@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Uploader</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+
+<body style='background: url("/static/images/login-background.png");'>
+  <div style=" width: 100%; height: 9vh;">
+    <img src="/static/images/secure_ai.svg" style="height: 10vh;width: 200px; margin-left: 1%;">
+  </div>
+
+  <div class="uploader">
+      <h3 style="text-align: center; margin-top: 10%; color: gray;">Drag&amp;Drop files here</h3>
+      <div style="margin-left: 50%; margin-top: 2%; color: gray;">or</div>
+      <img src="/static/images/upload_image.png"
+        style="height: 100px; width: 100px; align-items: center; margin-left: 40%;">
+    <form id="uploadForm" action="/persons_upload"  method="post" enctype="multipart/form-data">
+      <div class="form-group" style="text-align: center;">
+        <!-- <button style="display:block;width:120px; height:30px;" onclick="document.getElementById('imageFile').click()">Browse files</button> -->
+        <input type="file"  id="imgFile" name="imgFile"  accept="image/*" style="margin-left: 10%;color: gray;">
+        <!-- <label for="file">Choose a file</label> -->
+      </div>
+      <button class="uploadbtn" type="submit">Upload</button>
+    </form>
+    <!-- <div id="message"></div> -->
+  </div>
+  <div class="uploader1">
+      <table id="users">
+        <thead><tr><th></th><th>Image Id</th><th>Image Name</th><th>Timestamp</th></tr></thead>
+    </table>
+    <button type="button" onclick="submitForm()" style="margin-top: 32%;width: 80px; border-radius:7px;height: 30px; margin-left: 85%; background-color: #06143a; color: white;">Submit</button>
+    <!-- <input type="button" onclick="location.href='/high_chart';" value="Proceed" /> -->
+
+    <!-- <form action="/high_chart">
+    <button type="button">Proceed</button>
+    </form> -->
+  </div>
+
+  <script>
+  function fetchAndDisplayEntries()
+  {
+    var apiUrl = '/persons/get_all';
+    fetch(apiUrl).then(response => {
+      return response.json();
+    }).then(data => {
+      const dataArray = data;
+      // Work with JSON data here
+      console.log(data);
+      // 2. Create a variable to store HTML table headers
+      let li = `<thead><tr><th></th><th>Image Id</th><th>Image Name</th><th>Timestamp</th></tr></thead>`;
+
+  // 3. Loop through each data and add a table row
+  dataArray.forEach((item) => {
+        li += `<tbody>
+          <tr>    
+          <td><input type="checkbox" name="selectedItem" value="${item.id}"></td>
+          <td>${item.id}</td>
+          <td>${item.img_name}</td>
+          <td>${item.timestamp}</td>
+          <td><button class="deletebtn" title="Delete" onclick="deleteEntry('${item.img_name}')">
+            <img src="/static/images/trash1.png" height="15" width="15"></button></td>
+        </tr>
+        </tbody>`;
+      });
+      document.getElementById("users").innerHTML = li;
+    }).catch(err => {
+      // Do something for an error here
+    });
+  }
+
+  function deleteEntry(image_name) {
+    try {
+            fetch(`/persons/delete_one/${image_name}`, { method: "DELETE" });
+            fetchAndDisplayEntries();
+            alert("Entry deleted successfully.");
+        } catch (error) {
+            alert("Error deleting the entry.");
+            console.error("Error:", error);
+        }
+    }
+
+    fetchAndDisplayEntries();
+    // main.js
+//     function getCheckedItems() {
+//     // Get all checkboxes with the name "item"
+//     const checkboxes = document.querySelectorAll('input[name="item"]:checked');
+ 
+//     // Create an array to store the checked values
+//     const checkedValues = [];
+ 
+//     // Loop through the checked checkboxes and collect their values
+//     checkboxes.forEach(checkbox => {
+//         checkedValues.push(checkbox.value);
+//     });
+ 
+//     // Display the checked values (you can do anything with this array)
+//     console.log("Checked values:", checkedValues);
+// }
+function delete_single_person(){
+  
+}
+function submitForm() {
+  window.location.href = "/predict_persons";
+    const table = document.getElementById("users");
+    const checkboxes = table.querySelectorAll('input[type="checkbox"]');
+    console.log("checkboxes", checkboxes.values)
+    const selectedItems = [];
+
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            // console.log(checkbox.value)
+            selectedItems.push(checkbox.value);
+            
+        }
+    });
+    if (selectedItems.length === 0) {
+        alert("Please select at least one item.");
+        return;
+    }
+    console.log(selectedItems);
+    api_url = "/process-multiple-videos"
+    fetch(api_url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body:JSON.stringify(selectedItems) ,
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("message").textContent = data.message;
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("message").textContent = "Error occurred while submitting the form.";
+    });
+}
+
+  </script>
+</body>
+
+</html>
